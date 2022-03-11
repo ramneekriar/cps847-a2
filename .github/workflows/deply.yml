@@ -1,0 +1,27 @@
+name: Deploy index.html
+
+on:
+  push:
+    branches: [ stage ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: deploy index.html using scp action
+      uses: appleboy/scp-action@v0.0.1
+      with:
+        # host is moon.scs.ryerson.ca
+        host: ${{ secrets.DEPLOY_HOST }}
+        # scs username (scs_id)
+        username: ${{ secrets.DEPLOY_USERNAME }}
+        # scs password
+        password: ${{ secrets.DEPLOY_PASSWORD }}
+        # default port 22
+        port: ${{ secrets.DEPLOY_PORT }}
+        # index.html to be deployed
+        source: "index.html"
+        # deployed to moon.scs.ryerson.ca, directory /home/r33kaur/CPS847
+        target: "/home/r33kaur/CPS847"
